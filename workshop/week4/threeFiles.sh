@@ -18,7 +18,7 @@ if [ $# = 3 ]; then
     else
         #Display filename error
         echo "At least one of the arguments is not a valid filename."
-        exit1
+        exit 1
     fi
 else
     echo "You have not entered the correct number of arguments."
