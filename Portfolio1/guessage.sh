@@ -81,3 +81,10 @@ done
 
 exit 0
     #End script
+
+
+#References
+
+#Henry-Stocker, S. (2013). Using Bash's regular expressions.  Retrieved from https://www.networkworld.com/article/2693361/unix-tip-using-bash-s-regular-expressions.html
+#Tux. (2014). Bash: Get random number that belongs in a range.  Retrieved from https://bytefreaks.net/gnulinux/bash/bash-get-random-number-that-belongs-in-a-range
+
