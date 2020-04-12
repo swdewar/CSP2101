@@ -1,5 +1,15 @@
 #/bin/bash
-# Prompt for folder name, input on same line saved to variable "foldername"
-read -p "Please enter the folder to display contents:" folderName
-# Display folder contents of stored variable "folderName"
-ls $folderName
+
+rtdir=~/CSP2101/
+
+echo "AVAILABLE DIRECTORIES IN $rtdir:"
+ls $rtdir
+
+read -p 'Select a directory from the list above: ' seldir
+
+    if [ "$(ls -A ${rtdir}${seldir})" ]; then
+        #if there are files
+        ls ${rtdir}${seldir}
+    else
+        echo "The $seldir directory is empty."
+    fi
