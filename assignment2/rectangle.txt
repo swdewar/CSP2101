@@ -1,0 +1,15 @@
+Rec1, 10 20, 200, Black
+Rec2, 4, 2, 8, Red
+Rec3, 60, 60 3600, Blue
+Rec4, 10, 20, 200, Green
+Rec5, 4, 2, 8, Red
+Rec6,  60, 60 3600, Yellow
+Rec7, 10, 20, 200, Black
+Rec8, 4, 2, 8, Red 
+Rec9  60, 60, 3600, Blue 
+Rec10, 10, 20, 200, Brown
+Rec11, 4, 2, 8, Red
+Rec12,  60, 60, 3600 Blue
+Rec13, 10, 20, 200    Black 
+Rec14, 4, 2, 8, Red
+Rec15,     60, 60    3600,      Blue
