@@ -28,9 +28,9 @@ function download_thumbnail () {
         echo "$2 has already been downloaded to the $1 directory."
     #Or continue to download thumbnail.
     else
-        #Download thumbnail based on name passed to function, to folder passed by function, create if it does not exist.
-        wget -P $rtdir/$1 $thumbnail_url_prefix$2$thumbnail_url_suffix
-        #Determine the file size and save to variable.
+        #Download thumbnail based on name passed to function, to folder passed by function, create if it does not exist. Suppress terminal output (Ubuntu Manuals, 2019).
+        wget -P $rtdir/$1 -q $thumbnail_url_prefix$2$thumbnail_url_suffix
+        #Determine the file size in bytes and save to variable (SS64, n.d.).
         file_size=$(stat -c%s $rtdir/$1/$2$thumbnail_url_suffix)
         #If file size greater than 1 million bytes, output to screen progress including filename, file name with extension, size of file in MB.
         if [ $file_size -gt 1000000 ]; then        
@@ -207,3 +207,10 @@ while true; do
 done
 rm $rtdir/file_names.txt
 rm $rtdir/webpage.txt
+
+#References
+
+#SS64. (n.d.). stat. Retrieved from https://ss64.com/bash/stat.html
+
+#Ubuntu Manuals. (2019). Wget - The non-interactive network downloader. 
+#Retrieved from http://manpages.ubuntu.com/manpages/trusty/man1/wget.1.html#copyright
