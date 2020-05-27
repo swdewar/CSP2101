@@ -110,14 +110,6 @@ function range_thumbnails () {
     done 
 }
 
-
-#wget $thumbnail_url_prefix${temp_array[2]}$thumbnail_url_suffix
-
-#random_thumbnail 4
-#specific_thumbnail 1578
-#all_thumbnails
-#range_thumbnails
-
 #Display program name.
 echo -e "\nECU Thumbnail Downloader Program\n"
 #Endless outer loop to allow user to continue the program.
