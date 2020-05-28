@@ -25,7 +25,7 @@ done < file_names.txt
 function download_thumbnail () {
     #If the file exists in the chosen directory, alert the user.
     if [ -f $rtdir/$1/$2$thumbnail_url_suffix ]; then
-        echo "$2 has already been downloaded to the $1 directory."
+        echo -e "\n$2 has already been downloaded to the $1 directory.\n"
     #Or continue to download thumbnail.
     else
         #Download thumbnail based on name passed to function, to folder passed by function, create if it does not exist. Suppress terminal output (Ubuntu Manuals, 2019).
@@ -35,15 +35,54 @@ function download_thumbnail () {
         #If file size greater than 1 million bytes, output to screen progress including filename, file name with extension, size of file in MB.
         if [ $file_size -gt 1000000 ]; then        
             #Whole numbers and decimals calculated and displayed using division and modulo arithmetic.
-            echo "Downloading $2, with the file name $2$thumbnail_url_suffix, with a file size of $((file_size / 1000000)).$(((file_size%1000000)/10000)) MB....File Download Complete" 
+            echo -e "\nDownloading $2, with the file name $2$thumbnail_url_suffix, with a file size of $((file_size / 1000000)).$(((file_size%1000000)/10000)) MB....File Download Complete\n" 
         #Or, if file size is less than 1 million bytes, output to screen progress including filename, file name with extension, size of file in KB.
         else 
-            echo "Downloading $2, with the file name $2$thumbnail_url_suffix, with a file size of $((file_size / 1000)).$(((file_size%1000)/10)) KB....File Download Complete"
+            echo -e "\nDownloading $2, with the file name $2$thumbnail_url_suffix, with a file size of $((file_size / 1000)).$(((file_size%1000)/10)) KB....File Download Complete\n"
         fi
     fi
 }
 
-    
+#Function to search for a given file name in text file and return index for use in array.
+function file_index () {
+    #Search for a given trailiing portion of filename in file_name.txt, show line number, pipe to sed to strip the string
+    index_of_file=$(grep -n "$1$" file_names.txt | sed s/:.*$//)
+    #As array indexes start at 0, must subtract 1. This also ensures the the variable is treated as numeric.
+    index_of_file=$(($index_of_file-1))
+}
+
+#Function to search for and download a file specified by the user.
+function specific_thumbnail () {
+    #Search for the index of the given filename parameter using the file_index function.
+    file_index $1
+    #If index_of_file equals -1, then no matches were found in the file therfore the file does not exist.
+    if [[ $index_of_file -eq -1 ]]; then
+        echo "You entered $1. A file named DSC0$1 does not exist"
+        #return a false status so loop will repeat.
+        return 1   
+    else 
+        #The index generated is used to specify which file from files_array is downloaded to the Specific_Thumbnails folder by the download_thumbnail function.
+        download_thumbnail Specific_Thumbnails ${files_array[$index_of_file]}        
+    fi    
+}
+
+#Function to download all thumbnails.
+function all_thumbnails () {
+    #Each line of file_names.txt is used to download every file to the All_Thumbnails folder using the download_thumbnails function. 
+    while read line; do
+    download_thumbnail All_Thumbnails $line
+    done < file_names.txt    
+}
+
+#Function to download a range of thumbnails between 2 file specified by the user.
+function range_thumbnails () {
+    #Takes the start and end of range indexes as the beginning end end values of a C style loop. 
+    for ((i = $1; i <= $2; i++)); do
+        #Indexes specify which files from files_array are downloaded to the Range_Thumbnails folder by the download_thumbnail function.
+        download_thumbnail Range_Thumbnails ${files_array[$i]}
+    done 
+}
+
 #Function to randomly choose an index based on a parameter indicating the number of elements in the array. 
 function random_index () {
     #Random internal function assigns a random number from a range of 0-32767 to rand_number variable.
@@ -69,47 +108,6 @@ function random_thumbnail () {
     done
 }
 
-#Function to search for a given file name in text file and return index for use in array.
-function file_index () {
-    #Search for a given trailiing portion of filename in file_name.txt, show line number, pipe to sed to strip the string
-    index_of_file=$(grep -n "$1$" file_names.txt | sed s/:.*$//)
-    #As array indexes start at 0, must subtract 1. This also ensures the the variable is treated as numeric.
-    index_of_file=$(($index_of_file-1))
-}
-
-#Function to search for and download a file specified by the user.
-function specific_thumbnail () {
-    #Search for the index of the given filename parameter using the file_index function.
-    file_index $1
-    #If index_of_file equals -1, then no matches were found in the file therfore the file does not exist.
-    if [[ $index_of_file -eq -1 ]]; then
-        echo "You entered $1. A file named DSC0$1 does not exist"
-        #return a false status so loop will repeat.
-        return 1   
-    else 
-        #The index generated is used to specify which file from files_array is downloaded to the Specific_Thumbnails folder by the download_thumbnail function.
-        download_thumbnail Specific_Thumbnails ${files_array[$index_of_file]}        
-    fi    
-    
-}
-
-#Function to download all thumbnails.
-function all_thumbnails () {
-    #Each line of file_names.txt is used to download every file to the All_Thumbnails folder using the download_thumbnails function. 
-    while read line; do
-    download_thumbnail All_Thumbnails $line
-    done < file_names.txt    
-}
-
-#Function to download a range of thumbnails between 2 file specified by the user.
-function range_thumbnails () {
-    #Takes the start and end of range indexes as the beginning end end values of a C style loop. 
-    for ((i = $1; i <= $2; i++)); do
-        #Indexes specify which files from files_array are downloaded to the Range_Thumbnails folder by the download_thumbnail function.
-        download_thumbnail Range_Thumbnails ${files_array[$i]}
-    done 
-}
-
 #Display program name.
 echo -e "\nECU Thumbnail Downloader Program\n"
 #Endless outer loop to allow user to continue the program.
@@ -122,8 +120,8 @@ while true; do
     case $selection in
         "1")
             #Output to screen instructions and a selection of file names stored in the files_array.
-            echo "Select one of the following available files to download:"
-            echo ${files_array[@]}
+            echo -e "\nSelect one of the following available files to download:\n"
+            echo -e "${files_array[@]}\n"
             #Begin endless loop to repeat until user enters a valid file name.
             while true; do 
                 #Prompt user for input to be saved to chosen_file variable.
@@ -143,7 +141,7 @@ while true; do
             #Begin inner loop to repeat until valid input is provided.
             while true; do
                 #Prompt user for start and end of range file_names and assign to variables.
-                echo  "Please select the start of the range from the available files above."
+                echo  -e "\nPlease select the start of the range from the available files above."
                 read -p "Enter the last 4 digits: " start_range
                 echo  "Please select the end of the range from the available files above."
                 read -p "Enter the last 4 digits: " end_range
@@ -192,7 +190,7 @@ while true; do
         echo -e "\n\n "
     else
         #Else user input is not a Y or y, termination message, break out of outer loop 
-        echo -e "\nEnding Program........."
+        echo -e "\nEnding Program.........\nProgram Complete!"
         break
     fi
 
