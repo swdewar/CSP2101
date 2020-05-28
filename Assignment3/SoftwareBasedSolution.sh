@@ -10,7 +10,6 @@ curl https://www.ecu.edu.au/service-centres/MACSC/gallery/gallery.php?folder=152
 sed -n '/https:\/\/secure\.ecu\.edu\.au\/service-centres\/MACSC\/gallery\/152\/DSC/ p' webpage.txt | sed -e '
 s/^.*152\///
 s/.jpg.*>$//' > file_names.txt
-#cat file_names.txt
 #Establish variables to be added to filenames during fetch commands.
 thumbnail_url_prefix="https://secure.ecu.edu.au/service-centres/MACSC/gallery/152/"
 thumbnail_url_suffix=".jpg"
