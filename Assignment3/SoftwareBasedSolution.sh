@@ -15,7 +15,7 @@ thumbnail_url_prefix="https://secure.ecu.edu.au/service-centres/MACSC/gallery/15
 thumbnail_url_suffix=".jpg"
 rtdir=$PWD
 
-#Assign each line of the file_names.txt file to an array allowing for efficient indexing options.
+#Assign each line of the file_names.txt file to an array allowing for efficient indexing options (DevHints.IO, n.d.).
 while read line; do
     files_array+=($line)
 done < file_names.txt
@@ -203,3 +203,4 @@ rm $rtdir/webpage.txt
 
 #Ubuntu Manuals. (2019). Wget - The non-interactive network downloader. 
 #Retrieved from http://manpages.ubuntu.com/manpages/trusty/man1/wget.1.html#copyright
+#DevHints.IO. (n.d.). Bashscripting cheatsheet. Retrieved from https://devhints.io/bash
